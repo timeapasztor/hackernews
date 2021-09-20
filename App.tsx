@@ -1,12 +1,14 @@
 import React from 'react';
 import { Provider } from 'react-redux'
 import store from './store'
-import ApplicationRoot from "./ApplicationRoot/ApplicationRoot";
+import HackerStories from "./components/HackerStories";
 
-export default function App() {
+const App = () => {
   return (
     <Provider store={store}>
-      <ApplicationRoot />
+      <HackerStories />
     </Provider>
   );
 }
+
+export default App;

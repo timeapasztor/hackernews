@@ -1,7 +1,8 @@
 import { SET_STR } from "../actions/Stories";
+import {StoryItem} from "../types/Story";
 
 export interface IStoriesState {
-    stories: any;
+    stories: StoryItem[];
 }
 
 export const storyReducer = (state: IStoriesState = {} as IStoriesState, action: any) => {

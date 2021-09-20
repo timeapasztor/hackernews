@@ -1,28 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import {
-    StatusBar,
-    Text,
-    StyleSheet,
-    View,
-    ScrollView,
-    ActivityIndicator
-} from 'react-native';
+import {ActivityIndicator, ScrollView, StatusBar, StyleSheet, View} from 'react-native';
 import Api from "../api/Api";
 import {setStr} from "../actions/Stories";
 import {connect} from "react-redux";
+import {StoryItem} from "../types/Story";
+import StoryCard from "./StoryCard";
+import {getStoryTime} from "../utils/fnDate";
 
-type StoryItemType = {
-    title: string;
-    url: string;
-    timestamp: string;
-    score: number;
-    author: string;
-    authorScore: number;
-    id: string;
-}
-
-const ApplicationRoot = (props: any) => {
-    const [storyItems, setStoryItems] = useState<StoryItemType[]>([]);
+const HackerStories: React.FC = (props: any) => {
+    const [storyItems, setStoryItems] = useState<StoryItem[]>([]);
 
     useEffect(() => {
         loadStories();
@@ -36,7 +22,7 @@ const ApplicationRoot = (props: any) => {
         const storyIds = await Api.fetch('https://hacker-news.firebaseio.com/v0/topstories.json');
         const selectedStoryIds = storyIds.sort(() => 0.5 - Math.random()).slice(0, 10);
 
-        let promises: Promise<StoryItemType>[] = [];
+        let promises: Promise<StoryItem>[] = [];
         selectedStoryIds.forEach((storyId: string) => {
             let promise = fetchStoryItem(storyId)
             promises.push(promise)
@@ -52,11 +38,12 @@ const ApplicationRoot = (props: any) => {
         const storyDetail = await Api.fetch(urlStoryDetail);
         let urlAuthorDetail = `https://hacker-news.firebaseio.com/v0/user/${storyDetail.by}.json`;
         const authorDetail = await Api.fetch(urlAuthorDetail);
+        const time = getStoryTime(storyDetail.time);
         return {
             id: id,
             title: storyDetail.title,
             url: storyDetail.url,
-            timestamp: storyDetail.time,
+            timestamp: time,
             score: storyDetail.score,
             author: authorDetail.id,
             authorScore: authorDetail.karma
@@ -66,23 +53,14 @@ const ApplicationRoot = (props: any) => {
     const renderStories = () => {
         let randomStories: JSX.Element[] = [];
         if (props.randomStories) {
-            props.randomStories.map((story:StoryItemType) => {
+            props.randomStories.map((story:StoryItem, index: number) => {
                 randomStories.push(
-                    <View style={styles.item} key={story.id}>
-                        <Text style={styles.title}>{story.title}</Text>
-                        <Text style={styles.title}>{story.url}</Text>
-                        <Text style={styles.title}>{story.author}</Text>
-                        <Text style={styles.title}>{story.authorScore}</Text>
-                        <Text style={styles.title}>{story.score}</Text>
-                        <Text style={styles.title}>{story.timestamp}</Text>
-                    </View>
+                    <StoryCard key={index} story={story}/>
                 )
             })
             return randomStories;
         }
     }
-
-    console.log("ITEMS", storyItems.length);
 
     return (
         <View style={styles.view}>
@@ -95,23 +73,6 @@ const ApplicationRoot = (props: any) => {
 }
 
 const styles = StyleSheet.create({
-    item: {
-        backgroundColor: '#f9c2ff',
-        height: 150,
-        justifyContent: 'center',
-        marginVertical: 8,
-        marginHorizontal: 16,
-        padding: 20,
-    },
-    title: {
-        fontSize: 12,
-    },
-    container: {
-        flex: 1
-    },
-    text: {
-        fontSize: 22,
-    },
     view: {
         flex: 1,
         alignItems: 'center',
@@ -130,4 +91,4 @@ const mapDispatchToProps = (dispatch: any) => {
     };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ApplicationRoot);
+export default connect(mapStateToProps, mapDispatchToProps)(HackerStories);
