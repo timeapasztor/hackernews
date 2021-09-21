@@ -1,11 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {ActivityIndicator, ScrollView, StatusBar, StyleSheet, View} from 'react-native';
 import Api from "../api/Api";
-import {setStr} from "../actions/Stories";
+import {setStories} from "../actions/Stories";
 import {connect} from "react-redux";
 import {StoryItem} from "../types/Story";
 import StoryCard from "./StoryCard";
-import {getStoryTime} from "../utils/fnDate";
 
 const HackerStories: React.FC = (props: any) => {
     const [storyItems, setStoryItems] = useState<StoryItem[]>([]);
@@ -38,12 +37,11 @@ const HackerStories: React.FC = (props: any) => {
         const storyDetail = await Api.fetch(urlStoryDetail);
         let urlAuthorDetail = `https://hacker-news.firebaseio.com/v0/user/${storyDetail.by}.json`;
         const authorDetail = await Api.fetch(urlAuthorDetail);
-        const time = getStoryTime(storyDetail.time);
         return {
             id: id,
             title: storyDetail.title,
             url: storyDetail.url,
-            timestamp: time,
+            timestamp: storyDetail.time,
             score: storyDetail.score,
             author: authorDetail.id,
             authorScore: authorDetail.karma
@@ -87,7 +85,7 @@ const mapStateToProps = (state: { randomStories: any }) => {
 
 const mapDispatchToProps = (dispatch: any) => {
     return {
-        handleStoryItems: (stories: any) => dispatch(setStr(stories)),
+        handleStoryItems: (stories: any) => dispatch(setStories(stories)),
     };
 };
 

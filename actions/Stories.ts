@@ -1,10 +1,10 @@
 import {StoryItem} from "../types/Story";
 
-export const SET_STR = "SET_STORIES";
+export const SET_STORIES = "SET_STORIES";
 
-export function setStr(stories: StoryItem[]) {
+export function setStories(stories: StoryItem[]) {
     return {
-        type: SET_STR,
+        type: SET_STORIES,
         payload: {
             stories
         }

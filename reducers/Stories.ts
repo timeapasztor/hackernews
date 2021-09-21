@@ -1,5 +1,5 @@
-import { SET_STR } from "../actions/Stories";
-import {StoryItem} from "../types/Story";
+import { SET_STORIES } from "../actions/Stories";
+import { StoryItem } from "../types/Story";
 
 export interface IStoriesState {
     stories: StoryItem[];
@@ -7,7 +7,7 @@ export interface IStoriesState {
 
 export const storyReducer = (state: IStoriesState = {} as IStoriesState, action: any) => {
     switch (action.type) {
-        case SET_STR:
+        case SET_STORIES:
             return {
                 ...state,
                 stories: action.payload.stories

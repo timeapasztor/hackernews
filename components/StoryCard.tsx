@@ -1,6 +1,7 @@
 import React from 'react';
 import {StoryItem} from "../types/Story";
 import {StyleSheet, Text, View} from "react-native";
+import {formatStoryTime} from "../utils/fnDate";
 
 type StoryItemProps = {
     story: StoryItem;
@@ -18,7 +19,7 @@ const StoryCard: React.FC<StoryItemProps> = (props) => {
             <Text style={styles.inline}>
                 <Text style={styles.detail}>Story score: {props.story.score}</Text>
                 <Text style={styles.detail}> | </Text>
-                <Text style={styles.detail}>Updated {props.story.timestamp}</Text>
+                <Text style={styles.detail}>Updated {formatStoryTime(props.story.timestamp)}</Text>
             </Text>
             <Text style={styles.url}>Read more: {props.story.url}</Text>
         </View>
@@ -30,7 +31,6 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 20,
         backgroundColor: '#ffe4e1',
-        height: 150,
         justifyContent: 'center',
         marginVertical: 8,
         marginHorizontal: 16,
