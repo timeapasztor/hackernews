@@ -11,16 +11,16 @@ const StoryCard: React.FC<StoryItemProps> = (props) => {
     return (
         <View style={styles.item} key={props.story.id}>
             <Text style={styles.title}>{props.story.title}</Text>
-            <Text style={styles.inline}>
+            <View style={styles.inline}>
                 <Text style={styles.author}>Created by: {props.story.author}</Text>
                 <Text style={styles.author}> | </Text>
                 <Text style={styles.author}>Author score: {props.story.authorScore}</Text>
-            </Text>
-            <Text style={styles.inline}>
+            </View>
+            <View style={styles.inline}>
                 <Text style={styles.detail}>Story score: {props.story.score}</Text>
                 <Text style={styles.detail}> | </Text>
                 <Text style={styles.detail}>Updated {formatStoryTime(props.story.timestamp)}</Text>
-            </Text>
+            </View>
             <Text style={styles.url}>Read more: {props.story.url}</Text>
         </View>
     )
@@ -34,11 +34,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginVertical: 8,
         marginHorizontal: 16,
-        padding: 20,
+        padding: 20
     },
     title: {
         fontSize: 12,
-        paddingBottom: 10,
+        marginBottom: 10,
         fontWeight: "bold"
     },
     url: {
@@ -46,15 +46,15 @@ const styles = StyleSheet.create({
     },
     author: {
         fontSize: 10,
-        paddingBottom: 10,
+        marginBottom: 10,
         fontWeight: "bold",
-        color: '#484848',
+        color: '#484848'
     },
     detail: {
         fontSize: 8,
-        paddingBottom: 10,
+        marginBottom: 10,
         fontWeight: "bold",
-        color: '#989898',
+        color: '#989898'
     },
     inline: {
         display: "flex",
